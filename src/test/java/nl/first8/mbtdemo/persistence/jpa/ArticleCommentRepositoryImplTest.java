@@ -7,13 +7,14 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
-import org.graphwalker.core.condition.EdgeCoverage;
 import org.graphwalker.core.condition.TimeDuration;
 import org.graphwalker.core.generator.RandomPath;
 import org.graphwalker.core.machine.ExecutionContext;
 import org.graphwalker.core.machine.Machine;
 import org.graphwalker.core.machine.SimpleMachine;
+import org.graphwalker.core.model.Action;
 import org.graphwalker.core.model.Edge;
+import org.graphwalker.core.model.Guard;
 import org.graphwalker.core.model.Model;
 import org.graphwalker.core.model.Vertex;
 import org.junit.Test;
@@ -34,6 +35,7 @@ public class ArticleCommentRepositoryImplTest extends ExecutionContext {
 	private ArticleRepositoryImpl repository;
 
 	private final String title = "Some title";
+	private int expectedCommentCount = 0;
 
 	private final Article article = new Article(//
 			title, //
@@ -54,16 +56,8 @@ public class ArticleCommentRepositoryImplTest extends ExecutionContext {
 	}
 
 	public void present() {
-		System.out.println("present");
 		assertTrue(repository.findByName(title).isPresent());
-		assertEquals(0, //
-				repository.findByName(title).get().getComments().size());
-	}
-
-	public void hasComment() {
-		System.out.println("hasComment");
-		assertTrue(repository.findByName(title).isPresent());
-		assertEquals(1, //
+		assertEquals(expectedCommentCount, //
 				repository.findByName(title).get().getComments().size());
 	}
 
@@ -73,17 +67,22 @@ public class ArticleCommentRepositoryImplTest extends ExecutionContext {
 	}
 
 	public void removeArticle() {
+		expectedCommentCount = 0;
 		repository.removeArticle(article);
 	}
 
 	public void addComment() {
+		expectedCommentCount++;
 		Article model = repository.findByName(article.getTitle()).get();
 		model.getComments().add(comment);
 		repository.save(model);
 	}
 
 	public void removeComment() {
-		repository.save(article);
+		expectedCommentCount--;
+		Article model = repository.findByName(article.getTitle()).get();
+		model.getComments().remove(0);
+		repository.save(model);
 	}
 
 	@Test
@@ -91,20 +90,23 @@ public class ArticleCommentRepositoryImplTest extends ExecutionContext {
 		// States
 		final Vertex notPresent = new Vertex().setName("notPresent");
 		final Vertex present = new Vertex().setName("present");
-		final Vertex hasComment = new Vertex().setName("hasComment");
 		// Transitions
 		final Model model = new Model() //
 				.addEdge(new Edge().setName("addArticle") //
+						.addAction(new Action("var comments = 0"))
 						.setSourceVertex(notPresent)//
 						.setTargetVertex(present))
 				.addEdge(new Edge().setName("removeArticle") //
 						.setSourceVertex(present) //
 						.setTargetVertex(notPresent)) //
 				.addEdge(new Edge().setName("addComment") //
+						.addAction(new Action("comments++"))
 						.setSourceVertex(present) //
-						.setTargetVertex(hasComment)) //
+						.setTargetVertex(present)) //
 				.addEdge(new Edge().setName("removeComment") //
-						.setSourceVertex(hasComment) //
+						.setGuard(new Guard("comments > 0"))
+						.addAction(new Action("comments--"))
+						.setSourceVertex(present) //
 						.setTargetVertex(present));
 
 		// Build and register model

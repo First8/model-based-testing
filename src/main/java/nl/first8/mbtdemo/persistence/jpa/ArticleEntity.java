@@ -28,10 +28,14 @@ public class ArticleEntity {
 	private String content;
 	private String author;
 	private LocalDateTime publishedOn;
-	@OneToMany(cascade = CascadeType.ALL, /*orphanRemoval = true,*/ fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	@JoinColumn(name = "article")
 	@OrderBy // orders by id, the primary key of comment
 	private List<CommentEntity> comments = new ArrayList<>();
+	
+	/*
+	 * Adapters to and from article
+	 */
 	
 	public final Article toArticle() {
 		return new Article(//
