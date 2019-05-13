@@ -39,7 +39,7 @@ public class PostRepositoryImplTest extends ExecutionContext {
 				Collections.emptyList());
 	
 	public void notPresent() {
-		assertTrue(repository.findByTitle(post.getTitle()).isEmpty());
+		assertFalse(repository.findByTitle(post.getTitle()).isPresent());
 	}
 	
 	public void present() {

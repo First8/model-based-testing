@@ -51,8 +51,7 @@ public class PostCommentRepositoryImplTest extends ExecutionContext {
 
 	// States
 	public void notPresent() {
-		System.out.println("notPresent");
-		assertTrue(repository.findByTitle(title).isEmpty());
+		assertFalse(repository.findByTitle(title).isPresent());
 	}
 
 	public void present() {
