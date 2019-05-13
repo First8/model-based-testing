@@ -3,17 +3,13 @@ package nl.first8.mbtdemo.persistence.jpa;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.graphwalker.core.condition.EdgeCoverage;
 import org.graphwalker.core.condition.TimeDuration;
-import org.graphwalker.core.condition.VertexCoverage;
 import org.graphwalker.core.generator.RandomPath;
-import org.graphwalker.core.machine.Context;
 import org.graphwalker.core.machine.ExecutionContext;
 import org.graphwalker.core.machine.Machine;
 import org.graphwalker.core.machine.SimpleMachine;
@@ -25,11 +21,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import nl.first8.mbtdemo.Post;
-import nl.first8.mbtdemo.Comment;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
