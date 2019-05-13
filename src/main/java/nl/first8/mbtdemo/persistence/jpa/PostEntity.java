@@ -16,29 +16,29 @@ import javax.persistence.OrderBy;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import nl.first8.mbtdemo.Article;
+import nl.first8.mbtdemo.Post;
 
 @Entity
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ArticleEntity {
+public class PostEntity {
 	@Id
 	private String title;
 	private String content;
 	private String author;
 	private LocalDateTime publishedOn;
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-	@JoinColumn(name = "article")
+	@JoinColumn(name = "post")
 	@OrderBy // orders by id, the primary key of comment
 	private List<CommentEntity> comments = new ArrayList<>();
 	
 	/*
-	 * Adapters to and from article
+	 * Adapters to and from post
 	 */
 	
-	public final Article toArticle() {
-		return new Article(//
+	public final Post toPost() {
+		return new Post(//
 				title, //
 				content, //
 				author, //
@@ -48,13 +48,13 @@ public class ArticleEntity {
 						.collect(Collectors.toList()));
 	}
 	
-	public static ArticleEntity fromArticle(final Article article) {
-		return new ArticleEntity(//
-				article.getTitle(), //
-				article.getContent(), //
-				article.getAuthor(), //
-				article.getPublishedOn(), //
-				article.getComments().stream() //
+	public static PostEntity fromPost(final Post post) {
+		return new PostEntity(//
+				post.getTitle(), //
+				post.getContent(), //
+				post.getAuthor(), //
+				post.getPublishedOn(), //
+				post.getComments().stream() //
 						.map(CommentEntity::fromComment)
 						.collect(Collectors.toList())
 				);

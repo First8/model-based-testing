@@ -24,20 +24,20 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import nl.first8.mbtdemo.Article;
+import nl.first8.mbtdemo.Post;
 import nl.first8.mbtdemo.Comment;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-@Import(ArticleRepositoryImpl.class)
-public class ArticleCommentRepositoryImplTest extends ExecutionContext {
+@Import(PostRepositoryImpl.class)
+public class PostCommentRepositoryImplTest extends ExecutionContext {
 	@Autowired
-	private ArticleRepositoryImpl repository;
+	private PostRepositoryImpl repository;
 
 	private final String title = "Some title";
 	private int expectedCommentCount = 0;
 
-	private final Article article = new Article(//
+	private final Post post = new Post(//
 			title, //
 			"some author", //
 			"some content", //
@@ -52,35 +52,35 @@ public class ArticleCommentRepositoryImplTest extends ExecutionContext {
 	// States
 	public void notPresent() {
 		System.out.println("notPresent");
-		assertTrue(repository.findByName(title).isEmpty());
+		assertTrue(repository.findByTitle(title).isEmpty());
 	}
 
 	public void present() {
-		assertTrue(repository.findByName(title).isPresent());
+		assertTrue(repository.findByTitle(title).isPresent());
 		assertEquals(expectedCommentCount, //
-				repository.findByName(title).get().getComments().size());
+				repository.findByTitle(title).get().getComments().size());
 	}
 
 	// Transitions
-	public void addArticle() {
-		repository.save(article);
+	public void addPost() {
+		repository.save(post);
 	}
 
-	public void removeArticle() {
+	public void removePost() {
 		expectedCommentCount = 0;
-		repository.removeArticle(article);
+		repository.removePost(post);
 	}
 
 	public void addComment() {
 		expectedCommentCount++;
-		Article model = repository.findByName(article.getTitle()).get();
+		Post model = repository.findByTitle(post.getTitle()).get();
 		model.getComments().add(comment);
 		repository.save(model);
 	}
 
 	public void removeComment() {
 		expectedCommentCount--;
-		Article model = repository.findByName(article.getTitle()).get();
+		Post model = repository.findByTitle(post.getTitle()).get();
 		model.getComments().remove(0);
 		repository.save(model);
 	}
@@ -92,11 +92,11 @@ public class ArticleCommentRepositoryImplTest extends ExecutionContext {
 		final Vertex present = new Vertex().setName("present");
 		// Transitions
 		final Model model = new Model() //
-				.addEdge(new Edge().setName("addArticle") //
+				.addEdge(new Edge().setName("addPost") //
 						.addAction(new Action("var comments = 0"))
 						.setSourceVertex(notPresent)//
 						.setTargetVertex(present))
-				.addEdge(new Edge().setName("removeArticle") //
+				.addEdge(new Edge().setName("removePost") //
 						.setSourceVertex(present) //
 						.setTargetVertex(notPresent)) //
 				.addEdge(new Edge().setName("addComment") //

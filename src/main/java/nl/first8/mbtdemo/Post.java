@@ -6,7 +6,7 @@ import java.util.List;
 import lombok.Value;
 
 @Value
-public class Article {
+public class Post {
 	private final String title;
 	private final String content;
 	private final String author;

@@ -28,16 +28,16 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import nl.first8.mbtdemo.Article;
+import nl.first8.mbtdemo.Post;
 import nl.first8.mbtdemo.Comment;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-@Import(ArticleRepositoryImpl.class)
-public class ArticleRepositoryImplTest extends ExecutionContext {
-	@Autowired private ArticleRepositoryImpl repository;
+@Import(PostRepositoryImpl.class)
+public class PostRepositoryImplTest extends ExecutionContext {
+	@Autowired private PostRepositoryImpl repository;
 
-	private final Article article = new Article(//
+	private final Post post = new Post(//
 				"Some title", //
 				"some author", //
 				"some content", //
@@ -45,23 +45,23 @@ public class ArticleRepositoryImplTest extends ExecutionContext {
 				Collections.emptyList());
 	
 	public void notPresent() {
-		assertTrue(repository.findByName(article.getTitle()).isEmpty());
+		assertTrue(repository.findByTitle(post.getTitle()).isEmpty());
 	}
 	
 	public void present() {
-		assertTrue(repository.findByName(article.getTitle()).isPresent());
+		assertTrue(repository.findByTitle(post.getTitle()).isPresent());
 	}
 	
-	public void addArticle() {
-		repository.save(article);
+	public void addPost() {
+		repository.save(post);
 	}
 	
-	public void updateArticle() {
-		repository.save(article);
+	public void updatePost() {
+		repository.save(post);
 	}
 	
-	public void removeArticle() {
-		repository.removeArticle(article);
+	public void removePost() {
+		repository.removePost(post);
 	}
 	
 	@Test
@@ -71,13 +71,13 @@ public class ArticleRepositoryImplTest extends ExecutionContext {
 		final Vertex present = new Vertex().setName("present");
 		// Transitions
 		final Model model = new Model() //
-				.addEdge(new Edge().setName("addArticle") //
+				.addEdge(new Edge().setName("addPost") //
 						.setSourceVertex(notPresent)//
 						.setTargetVertex(present))
-				.addEdge(new Edge().setName("removeArticle") //
+				.addEdge(new Edge().setName("removePost") //
 						.setSourceVertex(present) //
 						.setTargetVertex(notPresent)) //
-				.addEdge(new Edge().setName("updateArticle") //
+				.addEdge(new Edge().setName("updatePost") //
 						.setSourceVertex(present) //
 						.setTargetVertex(present));
 		

@@ -7,7 +7,7 @@ import lombok.experimental.Delegate;
 
 @Service
 @RequiredArgsConstructor
-public class ArticleService {
-	@Delegate(types = ArticleRepository.class)
-	private final ArticleRepository repository;
+public class PostService {
+	@Delegate
+	private final PostRepository repository;
 }
