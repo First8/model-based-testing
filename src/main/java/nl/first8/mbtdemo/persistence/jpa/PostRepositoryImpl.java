@@ -31,4 +31,14 @@ public class PostRepositoryImpl implements PostRepository {
 	public Stream<Post> findAll() {
 		return repository.findAll().map(PostEntity::toPost);
 	}
+
+    @Override
+    public Stream<Post> findAllPublished() {
+        return repository.findAllPublished().map(PostEntity::toPost);
+    }
+
+    @Override
+    public Optional<Post> findPublisedByTitle(String title) {
+        return repository.findPublisedByTitle(title).map(PostEntity::toPost);
+    }
 }
