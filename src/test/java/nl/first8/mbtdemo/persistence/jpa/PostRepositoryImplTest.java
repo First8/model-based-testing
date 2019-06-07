@@ -29,63 +29,65 @@ import nl.first8.mbtdemo.Post;
 @DataJpaTest
 @Import(PostRepositoryImpl.class)
 public class PostRepositoryImplTest extends ExecutionContext {
-	@Autowired private PostRepositoryImpl repository;
+    @Autowired
+    private PostRepositoryImpl repository;
 
-	private final Post post = new Post(//
-				"Some title", //
-				"some author", //
-				"some content", //
-				LocalDateTime.now(), //
-				Collections.emptyList());
-	
-	public void notPresent() {
-		assertFalse(repository.findByTitle(post.getTitle()).isPresent());
-	}
-	
-	public void present() {
-		assertTrue(repository.findByTitle(post.getTitle()).isPresent());
-	}
-	
-	public void addPost() {
-		repository.save(post);
-	}
-	
-	public void updatePost() {
-		repository.save(post);
-	}
-	
-	public void removePost() {
-		repository.removePost(post);
-	}
-	
-	@Test
-	public void walkCRUDArticle() throws IOException {
-		// States
-		final Vertex notPresent = new Vertex().setName("notPresent");
-		final Vertex present = new Vertex().setName("present");
-		// Transitions
-		final Model model = new Model() //
-				.addEdge(new Edge().setName("addPost") //
-						.setSourceVertex(notPresent)//
-						.setTargetVertex(present))
-				.addEdge(new Edge().setName("removePost") //
-						.setSourceVertex(present) //
-						.setTargetVertex(notPresent)) //
-				.addEdge(new Edge().setName("updatePost") //
-						.setSourceVertex(present) //
-						.setTargetVertex(present));
-		
-		// Build and register model
-		this.setModel(model.build());
-		// We aim for 100% edge coverage
-		this.setPathGenerator(new RandomPath(new TimeDuration(2, TimeUnit.SECONDS)));
-		// We start in the state 'notPresent'
-		setNextElement(notPresent);
-		
-		// Build and run the machine
-		final Machine machine = new SimpleMachine(this);		
-		while(machine.hasNextStep()) {
-			machine.getNextStep();
-		}
-	}
+    private final Post post = new Post(//
+            "Some title", //
+            "some author", //
+            "some content", //
+            LocalDateTime.now(), //
+            Collections.emptyList());
+
+    public void notPresent() {
+        assertFalse(repository.findByTitle(post.getTitle()).isPresent());
+    }
+
+    public void present() {
+        assertTrue(repository.findByTitle(post.getTitle()).isPresent());
+    }
+
+    public void addPost() {
+        repository.save(post);
+    }
+
+    public void updatePost() {
+        repository.save(post);
+    }
+
+    public void removePost() {
+        repository.removePost(post);
+    }
+
+    @Test
+    public void walkCRUDArticle() throws IOException {
+        // States
+        final Vertex notPresent = new Vertex().setName("notPresent");
+        final Vertex present = new Vertex().setName("present");
+        // Transitions
+        final Model model = new Model() //
+                .addEdge(new Edge().setName("addPost") //
+                        .setSourceVertex(notPresent)//
+                        .setTargetVertex(present))
+                .addEdge(new Edge().setName("removePost") //
+                        .setSourceVertex(present) //
+                        .setTargetVertex(notPresent)) //
+                .addEdge(new Edge().setName("updatePost") //
+                        .setSourceVertex(present) //
+                        .setTargetVertex(present));
+
+        // Build and register model
+        this.setModel(model.build());
+        // We aim for 100% edge coverage
+        this.setPathGenerator(
+                new RandomPath(new TimeDuration(2, TimeUnit.SECONDS)));
+        // We start in the state 'notPresent'
+        setNextElement(notPresent);
+
+        // Build and run the machine
+        final Machine machine = new SimpleMachine(this);
+        while (machine.hasNextStep()) {
+            machine.getNextStep();
+        }
+    }
 }

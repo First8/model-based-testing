@@ -23,40 +23,40 @@ import nl.first8.mbtdemo.Post;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostEntity {
-	@Id
-	private String title;
-	private String content;
-	private String author;
-	private LocalDateTime publishedOn;
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-	@JoinColumn(name = "post")
-	@OrderBy // orders by id, the primary key of comment
-	private List<CommentEntity> comments = new ArrayList<>();
-	
-	/*
-	 * Adapters to and from post
-	 */
-	
-	public final Post toPost() {
-		return new Post(//
-				title, //
-				content, //
-				author, //
-				publishedOn, //
-				comments.stream() //
-						.map(CommentEntity::toComment) //
-						.collect(Collectors.toList()));
-	}
-	
-	public static PostEntity fromPost(final Post post) {
-		return new PostEntity(//
-				post.getTitle(), //
-				post.getContent(), //
-				post.getAuthor(), //
-				post.getPublishedOn(), //
-				post.getComments().stream() //
-						.map(CommentEntity::fromComment)
-						.collect(Collectors.toList())
-				);
-	}
+    @Id
+    private String title;
+    private String content;
+    private String author;
+    private LocalDateTime publishedOn;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
+            fetch = FetchType.EAGER)
+    @JoinColumn(name = "post")
+    @OrderBy("created ASC, id ASC")
+    private List<CommentEntity> comments = new ArrayList<>();
+
+    /*
+     * Adapters to and from post
+     */
+
+    public final Post toPost() {
+        return new Post(//
+                title, //
+                content, //
+                author, //
+                publishedOn, //
+                comments.stream() //
+                        .map(CommentEntity::toComment) //
+                        .collect(Collectors.toList()));
+    }
+
+    public static PostEntity fromPost(final Post post) {
+        return new PostEntity(//
+                post.getTitle(), //
+                post.getContent(), //
+                post.getAuthor(), //
+                post.getPublishedOn(), //
+                post.getComments().stream() //
+                        .map(CommentEntity::fromComment)
+                        .collect(Collectors.toList()));
+    }
 }

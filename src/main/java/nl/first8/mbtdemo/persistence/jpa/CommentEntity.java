@@ -17,22 +17,22 @@ import nl.first8.mbtdemo.Comment;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentEntity {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	private String author;
-	private String content;
-	private LocalDateTime created;
-	
-	Comment toComment() {
-		return new Comment(id, author, content, created);
-	}
-	
-	static CommentEntity fromComment(final Comment comment) {
-		return new CommentEntity(//
-				comment.getId(), //
-				comment.getAuthor(), //
-				comment.getContent(), //
-				comment.getCreated());
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String author;
+    private String content;
+    private LocalDateTime created;
+
+    Comment toComment() {
+        return new Comment(author, content, created);
+    }
+
+    static CommentEntity fromComment(final Comment comment) {
+        return new CommentEntity(//
+                null, //
+                comment.getAuthor(), //
+                comment.getContent(), //
+                comment.getCreated());
+    }
 }

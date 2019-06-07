@@ -8,6 +8,10 @@ import lombok.experimental.Delegate;
 @Service
 @RequiredArgsConstructor
 public class PostService {
-	@Delegate
-	private final PostRepository repository;
+    @Delegate
+    private final PostRepository repository;
+
+    public void saveComment(Comment comment) {
+
+    }
 }
