@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
-import org.graphwalker.core.condition.EdgeCoverage;
 import org.graphwalker.core.condition.TimeDuration;
 import org.graphwalker.core.generator.RandomPath;
 import org.graphwalker.core.machine.ExecutionContext;

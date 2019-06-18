@@ -1,13 +1,13 @@
 package nl.first8.mbtdemo.event;
 
-import java.time.LocalDateTime;
 
+import lombok.NonNull;
 import lombok.Value;
 
 @Value
 public class PostEvent {
-    private final String title;
-    private final String content;
-    private final String author;
-    private final LocalDateTime publishedOn;
+    private final @NonNull String title;
+    private final @NonNull String content;
+    private final @NonNull String author;
+    private final long publishedOn;
 }
