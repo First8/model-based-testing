@@ -26,10 +26,10 @@ public class TestPostListener {
     
     @SuppressWarnings("unused")
     @Autowired
-    private PostEventListener postEventListener;
+    private EventListener postEventListener;
 
     @Autowired
-    private PostEventProducer postEventProducer;
+    private EventProducer postEventProducer;
     
     @ClassRule
     public static EmbeddedKafkaRule kafkaEmbedded = new EmbeddedKafkaRule(//

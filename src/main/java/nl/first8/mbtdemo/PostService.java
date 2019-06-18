@@ -11,7 +11,10 @@ public class PostService {
     @Delegate
     private final PostRepository repository;
 
-    public void saveComment(Comment comment) {
-
+    public void saveComment(Comment comment, String postTitle) {
+        // TODO
+        // 1 Find post, if it does not exist, create new
+        // 2 Attach comment to post
+        // 3 Save post, including the new comment.
     }
 }

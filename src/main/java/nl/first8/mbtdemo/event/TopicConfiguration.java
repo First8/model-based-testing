@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class TopicConfiguration {
     static final String POST_TOPIC = "posts";
+    static final String COMMENT_TOPIC = "comments";
     /**
      * The NewTopic return type makes KafkaAdmin create a topic.
      * 
@@ -19,5 +20,14 @@ public class TopicConfiguration {
     @Bean
     public NewTopic createPostTopic() {
         return new NewTopic(POST_TOPIC, 1, (short) 1);
+    }
+    /**
+     * The NewTopic return type makes KafkaAdmin create a topic.
+     * 
+     * @return the topic to create, if it does not exist.
+     */
+    @Bean
+    public NewTopic createCommentTopic() {
+        return new NewTopic(COMMENT_TOPIC, 1, (short) 1);
     }
 }
